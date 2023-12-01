@@ -19,19 +19,19 @@
         d.process(); // "Allowed"
 */
 
-class Permission{
+class Permission {
 
     // These are static constants that show what are the possible values when checking permission.
     static OperationsConst = {
-        CREATE:"CREATE",
-        READ:"READ",
-        UPDATE:"UPDATE",
-        DELETE:"DELETE"
+        CREATE: "CREATE",
+        READ: "READ",
+        UPDATE: "UPDATE",
+        DELETE: "DELETE"
     }
     static RolesConst = {
-        OWNER:"OWNER",
-        EDITOR:"EDITOR",
-        READER:"READER"
+        OWNER: "OWNER",
+        EDITOR: "EDITOR",
+        READER: "READER"
     }
 
     // private variables
@@ -39,8 +39,8 @@ class Permission{
     #operation;
 
     // constructor
-    constructor(role, operation){
-        if(this.constructor.name === "Permission"){
+    constructor(role, operation) {
+        if (this.constructor.name === "Permission") {
             throw new Error("This class cannot be instantiated");
         }
         this.#role = role;
@@ -48,28 +48,57 @@ class Permission{
     }
 
     // function
-    check(){
-        
+    check() {
+
         const ops = this.#operation.toUpperCase();
 
-        switch(this.#role.toUpperCase()){
+        switch (this.#role.toUpperCase()) {
             case Permission.RolesConst.OWNER:
                 return true;
             case Permission.RolesConst.EDITOR:
-                if(ops === Permission.OperationsConst.READ || ops === Permission.OperationsConst.CREATE || ops === Permission.OperationsConst.UPDATE){
+                if (ops === Permission.OperationsConst.READ || ops === Permission.OperationsConst.CREATE || ops === Permission.OperationsConst.UPDATE) {
                     return true;
                 }
                 return false;
             case Permission.RolesConst.READER:
-                if(ops === Permission.OperationsConst.READ){
+                if (ops === Permission.OperationsConst.READ) {
                     return true;
                 }
                 return false;
             default:
                 return false;
-                
+
         }
     }
 }
 
 // Add code here
+class Document extends Permission {
+    #content;
+
+    constructor(role, operation, content) {
+        super(role, operation);
+        this.#content = content;
+    }
+
+    process() {
+        const permissionResult = this.check();
+        if (permissionResult) {
+            console.log(`Allowed. Content: ${this.#content}`);
+        } else {
+            console.log("Blocked");
+        }
+    }
+}
+
+// Scenario 1
+const d1 = new Document(Permission.RolesConst.EDITOR, Permission.OperationsConst.UPDATE, "Hello content");
+d1.process(); // "Allowed. Content: Hello content"
+
+// Scenario 2
+const d2 = new Document(Permission.RolesConst.READER, Permission.OperationsConst.UPDATE, "Hello content");
+d2.process(); // "Blocked"
+
+// Scenario 3
+const d3 = new Document(Permission.RolesConst.OWNER, Permission.OperationsConst.DELETE, "Hello content");
+d3.process(); // "Allowed. Content: Hello content"
