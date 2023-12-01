@@ -82,8 +82,8 @@ class Document extends Permission {
     }
 
     process() {
-        const permissionResult = this.check();
-        if (permissionResult) {
+        const permissionStatus = this.check();
+        if (permissionStatus) {
             console.log(`Allowed. Content: ${this.#content}`);
         } else {
             console.log("Blocked");
