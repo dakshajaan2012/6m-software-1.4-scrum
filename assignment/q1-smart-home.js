@@ -20,6 +20,7 @@ class BaseSignal {
 
 class TvSignal extends BaseSignal {
     constructor() {
+        // add code here
         super();
         this.type = "tv";
     }
@@ -27,6 +28,7 @@ class TvSignal extends BaseSignal {
 
 class AirconSignal extends BaseSignal {
     constructor() {
+        // add code here
         super();
         this.type = "aircon";
     }
@@ -34,6 +36,7 @@ class AirconSignal extends BaseSignal {
 
 class DoorSignal extends BaseSignal {
     constructor() {
+        // add code here
         super();
         this.type = "door";
     }
